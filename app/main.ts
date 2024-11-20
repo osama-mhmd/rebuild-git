@@ -1,4 +1,3 @@
-import { sha, SHA1 } from "bun";
 import * as fs from "fs";
 import * as zlib from "node:zlib";
 
@@ -31,7 +30,7 @@ switch (command) {
     zlib.unzip(buffer, (_, buf) => {
       const [typeAndSize, content] = buf.toString().split("\0");
       const [type, size] = typeAndSize.split(" ");
-      console.log(content);
+      console.log(content.trim());
     });
     break;
   default:
