@@ -1,59 +1,13 @@
-[![progress-banner](https://backend.codecrafters.io/progress/git/d5f977b4-109d-4b36-8f03-77e04f6dd53e)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
+Solution for - ["Build Your Own Git" Challenge](https://codecrafters.io/challenges/git).
+The program is "./git.sh"
 
-This is a starting point for TypeScript solutions to the
-["Build Your Own Git" Challenge](https://codecrafters.io/challenges/git).
+## Notes
 
-In this challenge, you'll build a small Git implementation that's capable of
-initializing a repository, creating commits and cloning a public repository.
-Along the way we'll learn about the `.git` directory, Git objects (blobs,
-commits, trees etc.), Git's transfer protocols and more.
+### Stage #4 (Read a blob)
 
-**Note**: If you're viewing this repo on GitHub, head over to
-[codecrafters.io](https://codecrafters.io) to try the challenge.
+Approach:
 
-# Passing the first stage
-
-The entry point for your Git implementation is in `app/main.ts`. Study and
-uncomment the relevant code, and push your changes to pass the first stage:
-
-```sh
-git commit -am "pass 1st stage" # any msg
-git push origin master
-```
-
-That's all!
-
-# Stage 2 & beyond
-
-Note: This section is for stages 2 and beyond.
-
-1. Ensure you have `bun (1.1)` installed locally
-1. Run `./your_program.sh` to run your Git implementation, which is implemented
-   in `app/main.ts`.
-1. Commit your changes and run `git push origin master` to submit your solution
-   to CodeCrafters. Test output will be streamed to your terminal.
-
-# Testing locally
-
-The `your_program.sh` script is expected to operate on the `.git` folder inside
-the current working directory. If you're running this inside the root of this
-repository, you might end up accidentally damaging your repository's `.git`
-folder.
-
-We suggest executing `your_program.sh` in a different folder when testing
-locally. For example:
-
-```sh
-mkdir -p /tmp/testing && cd /tmp/testing
-/path/to/your/repo/your_program.sh init
-```
-
-To make this easier to type out, you could add a
-[shell alias](https://shapeshed.com/unix-alias/):
-
-```sh
-alias mygit=/path/to/your/repo/your_program.sh
-
-mkdir -p /tmp/testing && cd /tmp/testing
-mygit init
-```
+1. Read the contents of the blob object file from the .git/objects directory
+2. Decompress the contents using Zlib
+3. Extract the actual "content" from the decompressed data
+4. Print the content to stdout

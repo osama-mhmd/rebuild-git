@@ -1,10 +1,13 @@
+import { sha, SHA1 } from "bun";
 import * as fs from "fs";
+import * as zlib from "node:zlib";
 
 const args = process.argv.slice(2);
 const command = args[0];
 
 enum Commands {
   Init = "init",
+  CatFile = "cat-file",
 }
 
 switch (command) {
@@ -18,6 +21,18 @@ switch (command) {
     fs.mkdirSync(".git/refs", { recursive: true });
     fs.writeFileSync(".git/HEAD", "ref: refs/heads/main\n");
     console.log("Initialized git directory");
+    break;
+  case Commands.CatFile:
+    if (args[1] !== "-p") break; // Checking for the "-p" flag
+    if (!args[2]) break; // Checking for the object name
+    const buffer = fs.readFileSync(
+      `.git/objects/${args[2].slice(0, 2)}/${args[2].slice(2)}`
+    );
+    zlib.unzip(buffer, (_, buf) => {
+      const [typeAndSize, content] = buf.toString().split("\0");
+      const [type, size] = typeAndSize.split(" ");
+      console.log(content);
+    });
     break;
   default:
     throw new Error(`Unknown command ${command}`);
