@@ -28,9 +28,10 @@ switch (command) {
       `.git/objects/${args[2].slice(0, 2)}/${args[2].slice(2)}`
     );
     zlib.unzip(buffer, (_, buf) => {
+      // console.log(buf.toString().trim());
       const [typeAndSize, content] = buf.toString().split("\0");
       const [type, size] = typeAndSize.split(" ");
-      console.log(content.trim());
+      process.stdout.write(content);
     });
     break;
   default:
