@@ -9,6 +9,7 @@ enum Commands {
   Init = "init",
   CatFile = "cat-file",
   HashObject = "hash-object",
+  LsTree = "ls-tree",
 }
 
 switch (command) {
@@ -48,6 +49,24 @@ switch (command) {
       `.git/objects/${name.slice(0, 2)}/${name.slice(2)}`,
       zlib.deflateSync(Buffer.from(`blob ${buf.byteLength}\0${buf.toString()}`))
     );
+    break;
+  case Commands.LsTree:
+    if (args[1] !== "--name-only") break; // Checking for the "--name-only" flag
+    if (!args[2]) break; // Checking for the tree name
+    const treeBuf = fs.readFileSync(
+      `.git/objects/${args[2].slice(0, 2)}/${args[2].slice(2)}`
+    );
+    zlib.inflate(treeBuf, (_, buf) => {
+      const content = buf
+        .toString()
+        .split("\0")
+        .slice(1, -1)
+        .reduce(
+          (acc: string[], cur) => [...acc, cur.split(" ").at(-1) as string],
+          []
+        );
+      console.log(content.join("\n"));
+    });
     break;
   default:
     throw new Error(`Unknown command ${command}`);
